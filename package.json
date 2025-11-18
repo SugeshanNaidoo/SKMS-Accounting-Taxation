@@ -1,0 +1,40 @@
+{
+  "name": "skms-serverless",
+  "version": "1.0.0",
+  "description": "SKMS Accounting & Taxation site with contact form using Vercel serverless functions",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node script.js"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "vercel",
+    "nodemailer",
+    "serverless",
+    "contact-form",
+    "accounting",
+    "taxation",
+    "skms",
+    "durban"
+  ],
+  "author": "SKMS Accounting & Taxation",
+  "license": "MIT",
+  "private": true,
+  "vercel": {
+    "functions": {
+      "api/contact.js": {
+        "runtime": "nodejs18.x"
+      }
+    }
+  },
+  "devDependencies": {
+    "vercel": "^27.0.0"
+  }
+}
