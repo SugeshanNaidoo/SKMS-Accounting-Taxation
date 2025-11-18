@@ -197,56 +197,113 @@ function animateStatNumber(element) {
     }, duration / steps);
 }
 
-// Contact Form Handler
-function initializeContactForm() {
+// Form Handling
+function initializeForms() {
     const contactForm = document.getElementById('contactForm');
+    const bookingForm = document.getElementById('bookingForm');
     
-    if (!contactForm) return;
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactForm);
+        setupFormValidation(contactForm);
+    }
+    
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', handleBookingForm);
+        setupFormValidation(bookingForm);
+    }
+}
 
-    const formStatus = document.getElementById('form-status');
+// Handle Contact Form Submission
+async function handleContactForm(e) {
+    e.preventDefault();
     
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+    const form = e.target;
+    const statusDiv = document.getElementById('form-status');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    if (!validateForm(form)) {
+        return;
+    }
+    
+    // Show loading state
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitButton.disabled = true;
+    showFormStatus(statusDiv, 'Sending your message...', 'loading');
+    
+    try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
         
-        // Get form data
-        const formData = new FormData(contactForm);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            message: formData.get('message')
-        };
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
         
-        // Validate form
-        if (!validateContactForm(data)) {
-            showFormStatus('error', 'Please fill in all required fields correctly.');
-            return;
+        if (response.ok) {
+            showFormStatus(statusDiv, 'Thank you for your message! We will get back to you shortly.', 'success');
+            form.reset();
+        } else {
+            throw new Error('Failed to send message');
         }
-        
-        // Show loading state
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.innerHTML;
-        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitButton.disabled = true;
-        
-        // Simulate form submission (replace with actual API call)
-        setTimeout(() => {
-            showFormStatus('success', 'Thank you for your message! We will get back to you shortly.');
-            contactForm.reset();
-            submitButton.innerHTML = originalButtonText;
-            submitButton.disabled = false;
-            
-            // Auto-hide success message after 5 seconds
-            setTimeout(() => {
-                if (formStatus) {
-                    formStatus.style.display = 'none';
-                }
-            }, 5000);
-        }, 1500);
-    });
+    } catch (error) {
+        showFormStatus(statusDiv, 'Sorry, there was an error sending your message. Please try again or contact us directly.', 'error');
+    } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    }
+}
 
-    // Real-time validation
-    const inputs = contactForm.querySelectorAll('input, textarea');
+// Handle Booking Form Submission
+async function handleBookingForm(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const statusDiv = document.getElementById('booking-form-status');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    if (!validateForm(form)) {
+        return;
+    }
+    
+    // Show loading state
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+    submitButton.disabled = true;
+    showFormStatus(statusDiv, 'Submitting your appointment request...', 'loading');
+    
+    try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        const response = await fetch('/api/booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+            showFormStatus(statusDiv, 'Your appointment request has been submitted! We will confirm your appointment within 24 hours.', 'success');
+            form.reset();
+        } else {
+            throw new Error('Failed to submit booking');
+        }
+    } catch (error) {
+        showFormStatus(statusDiv, 'Sorry, there was an error submitting your booking. Please try again or contact us directly.', 'error');
+    } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    }
+}
+
+// Setup Form Validation
+function setupFormValidation(form) {
+    const inputs = form.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.addEventListener('blur', function() {
             validateField(this);
@@ -258,70 +315,85 @@ function initializeContactForm() {
     });
 }
 
-// Validate contact form
-function validateContactForm(data) {
-    if (!data.name || data.name.trim().length < 2) return false;
-    if (!data.email || !isValidEmail(data.email)) return false;
-    if (!data.message || data.message.trim().length < 10) return false;
-    return true;
+// Show Form Status
+function showFormStatus(statusDiv, message, type) {
+    statusDiv.textContent = message;
+    statusDiv.className = `form-status ${type}`;
+    statusDiv.style.display = 'block';
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 5000);
+    }
 }
 
-// Validate individual field
+// Form Validation
+function validateForm(form) {
+    const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        if (!validateField(input)) {
+            isValid = false;
+        }
+    });
+    
+    return isValid;
+}
+
 function validateField(field) {
     const value = field.value.trim();
     let isValid = true;
     let errorMessage = '';
-
+    
     // Check if required field is empty
     if (field.hasAttribute('required') && !value) {
         isValid = false;
         errorMessage = 'This field is required.';
     }
-
+    
     // Email validation
     if (field.type === 'email' && value) {
-        if (!isValidEmail(value)) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
             isValid = false;
             errorMessage = 'Please enter a valid email address.';
         }
     }
-
+    
     // Phone validation
     if (field.type === 'tel' && value) {
-        if (!isValidPhone(value)) {
+        const phoneRegex = /^[\+]?[\d\s\-\(\)]+$/;
+        if (!phoneRegex.test(value)) {
             isValid = false;
             errorMessage = 'Please enter a valid phone number.';
         }
     }
-
-    // Message length validation
-    if (field.tagName === 'TEXTAREA' && value && value.length < 10) {
-        isValid = false;
-        errorMessage = 'Message must be at least 10 characters long.';
+    
+    // Date validation (must be future date)
+    if (field.type === 'date' && value) {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (selectedDate < today) {
+            isValid = false;
+            errorMessage = 'Please select a future date.';
+        }
     }
-
+    
+    // Show/hide error
     if (!isValid) {
         showFieldError(field, errorMessage);
     } else {
         clearFieldError(field);
     }
-
+    
     return isValid;
 }
 
-// Email validation
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Phone validation
-function isValidPhone(phone) {
-    const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
-    return phoneRegex.test(phone);
-}
-
-// Show field error
 function showFieldError(field, message) {
     clearFieldError(field);
     
@@ -331,36 +403,19 @@ function showFieldError(field, message) {
     errorDiv.className = 'field-error';
     errorDiv.style.color = '#EF4444';
     errorDiv.style.fontSize = '0.875rem';
-    errorDiv.style.marginTop = '8px';
-    errorDiv.style.display = 'flex';
-    errorDiv.style.alignItems = 'center';
-    errorDiv.style.gap = '5px';
+    errorDiv.style.marginTop = '5px';
     errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
     
-    field.parentElement.appendChild(errorDiv);
+    field.parentNode.appendChild(errorDiv);
 }
 
-// Clear field error
 function clearFieldError(field) {
     field.style.borderColor = '';
     
-    const existingError = field.parentElement.querySelector('.field-error');
+    const existingError = field.parentNode.querySelector('.field-error');
     if (existingError) {
         existingError.remove();
     }
-}
-
-// Show form status message
-function showFormStatus(type, message) {
-    const formStatus = document.getElementById('form-status');
-    if (!formStatus) return;
-    
-    formStatus.textContent = message;
-    formStatus.className = `form-status ${type}`;
-    formStatus.style.display = 'block';
-    
-    // Scroll to message
-    formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Keyboard navigation
