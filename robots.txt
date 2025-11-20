@@ -3,31 +3,24 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://www.skms.cc/sitemap.xml
+# Points to your correct sitemap
+Sitemap: https://skms.cc/sitemap.xml
 
-# Allow crawling of all HTML pages
-Allow: /index.html
-Allow: /about.html
-Allow: /services.html
-Allow: /contact.html
-
-# Allow crawling of static assets
-Allow: /*.css
-Allow: /*.js
-Allow: /*.png
-Allow: /*.jpg
-Allow: /*.jpeg
-Allow: /*.gif
-Allow: /*.svg
-Allow: /*.ico
-Allow: /imgs/
-
-# Block access to sensitive or unnecessary files
+# Block unnecessary directories (security + crawl efficiency)
 Disallow: /api/
-Disallow: /*.log
 Disallow: /private/
 Disallow: /temp/
+Disallow: /*.log$
 
-# Crawl-delay for respectful crawling
+# Allow all static files
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.ico$
+
+# Optional: reduce server load
 Crawl-delay: 1
