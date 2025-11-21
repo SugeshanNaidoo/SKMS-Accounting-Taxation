@@ -11,7 +11,7 @@
 
   <!-- About Page -->
   <url>
-    <loc>https://skms.cc/about.html</loc>
+    <loc>https://skms.cc/about</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -19,7 +19,7 @@
 
   <!-- Services Page -->
   <url>
-    <loc>https://skms.cc/services.html</loc>
+    <loc>https://skms.cc/services</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
@@ -27,7 +27,7 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://skms.cc/contact.html</loc>
+    <loc>https://skms.cc/contact</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
