@@ -1,420 +1,192 @@
-// Universal JavaScript for SKMS Website
+/* SKMS — shared behaviour. Loaded with defer on every page. */
+(function () {
+  'use strict';
 
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMobileMenu();
-    initializeScrollEffects();
-    initializeAnimations();
-    initializeContactForm();
-});
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Mobile Menu Toggle
-function initializeMobileMenu() {
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const nav = document.querySelector('nav ul');
-    
-    if (!mobileMenu || !nav) return;
+  /* ---------------- Mobile navigation ---------------- */
+  function initNav() {
+    var toggle = document.querySelector('.mobile-menu');
+    var nav = document.getElementById('primary-nav');
+    if (!toggle || !nav) return;
 
-    mobileMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleMobileMenu();
+    function setOpen(open) {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      var icon = toggle.querySelector('i');
+      if (icon) icon.className = open ? 'fas fa-xmark' : 'fas fa-bars';
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!nav.classList.contains('is-open'));
     });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('nav') && !e.target.closest('.mobile-menu')) {
-            closeMobileMenu();
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 860) setOpen(false);
+    });
+  }
+
+  /* ---------------- Header shadow on scroll ---------------- */
+  function initHeader() {
+    var header = document.querySelector('header');
+    if (!header) return;
+    var ticking = false;
+    function update() {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  /* ---------------- One entrance animation ---------------- */
+  function initReveal() {
+    var items = document.querySelectorAll('.reveal');
+    if (!items.length) return;
+    if (reduced || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
         }
-    });
+      });
+    }, { threshold: 0.2 });
+    items.forEach(function (el) { io.observe(el); });
+  }
 
-    // Close menu on window resize
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            closeMobileMenu();
-        }
-    });
+  /* ---------------- Blog filtering and search ---------------- */
+  function initBlogFilter() {
+    var grid = document.getElementById('blogGrid');
+    if (!grid) return;
 
-    // Close menu when clicking nav links
-    const navLinks = nav.querySelectorAll('a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                closeMobileMenu();
-            }
-        });
-    });
-}
+    var buttons = document.querySelectorAll('.category-btn');
+    var search = document.getElementById('searchInput');
+    var empty = document.getElementById('noResults');
+    var cards = grid.querySelectorAll('[data-category]');
+    var category = 'all';
 
-function toggleMobileMenu() {
-    const nav = document.querySelector('nav ul');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const icon = mobileMenu.querySelector('i');
-    
-    if (nav.style.display === 'flex') {
-        closeMobileMenu();
-    } else {
-        nav.style.display = 'flex';
-        nav.style.flexDirection = 'column';
-        nav.style.position = 'absolute';
-        nav.style.top = '80px';
-        nav.style.left = '0';
-        nav.style.right = '0';
-        nav.style.background = 'rgba(255, 255, 255, 0.98)';
-        nav.style.backdropFilter = 'blur(20px)';
-        nav.style.padding = '30px 20px';
-        nav.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
-        nav.style.zIndex = '999';
-        nav.style.animation = 'slideDown 0.3s ease';
-        icon.className = 'fas fa-times';
-        document.body.style.overflow = 'hidden';
-    }
-}
+    function apply() {
+      var term = search ? search.value.trim().toLowerCase() : '';
+      var shown = 0;
 
-function closeMobileMenu() {
-    const nav = document.querySelector('nav ul');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    if (!nav || !mobileMenu) return;
-    
-    const icon = mobileMenu.querySelector('i');
-    
-    nav.style.display = '';
-    icon.className = 'fas fa-bars';
-    document.body.style.overflow = '';
-}
+      cards.forEach(function (card) {
+        var matchesCat = category === 'all' || card.dataset.category === category;
+        var matchesTerm = !term || (card.dataset.search || '').indexOf(term) !== -1;
+        var visible = matchesCat && matchesTerm;
+        card.classList.toggle('is-filtered', !visible);
+        if (visible) shown++;
+      });
 
-// Scroll Effects
-function initializeScrollEffects() {
-    const header = document.querySelector('header');
-    
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
-            header.style.background = 'rgba(255, 255, 255, 1)';
-        } else {
-            header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            header.style.background = 'rgba(255, 255, 255, 0.98)';
-        }
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            
-            if (href && href !== '#' && href.length > 1) {
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-}
-
-// Animations on Scroll
-function initializeAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Animate cards and sections
-    const animateElements = document.querySelectorAll('.card, .service-card, .team-card, .mission-card, .contact-item');
-    animateElements.forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        observer.observe(el);
-    });
-
-    // Animate stats
-    const statNumbers = document.querySelectorAll('.stat-number');
-    if (statNumbers.length > 0) {
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateStatNumber(entry.target);
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        statNumbers.forEach(stat => {
-            statsObserver.observe(stat);
-        });
-    }
-}
-
-// Animate stat numbers
-function animateStatNumber(element) {
-    const text = element.textContent;
-    const hasPlus = text.includes('+');
-    const hasPercent = text.includes('%');
-    const hasR = text.includes('R');
-    const hasM = text.includes('M');
-    
-    let numberText = text.replace(/[^0-9.]/g, '');
-    const targetNumber = parseFloat(numberText);
-    
-    if (isNaN(targetNumber)) return;
-    
-    const duration = 2000;
-    const steps = 60;
-    const increment = targetNumber / steps;
-    let current = 0;
-    let step = 0;
-
-    const timer = setInterval(() => {
-        current += increment;
-        step++;
-        
-        let displayValue = Math.floor(current);
-        let displayText = displayValue.toString();
-        
-        if (hasR) displayText = 'R' + displayText;
-        if (hasM) displayText = displayText + 'M';
-        if (hasPlus) displayText = displayText + '+';
-        if (hasPercent) displayText = displayText + '%';
-        
-        element.textContent = displayText;
-        
-        if (step >= steps) {
-            clearInterval(timer);
-            element.textContent = text;
-        }
-    }, duration / steps);
-}
-
-// Contact Form Handler - UPDATED WITH API INTEGRATION
-function initializeContactForm() {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (!contactForm) return;
-
-    const formStatus = document.getElementById('form-status');
-    
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(contactForm);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            phone: formData.get('phone') || '',
-            message: formData.get('message')
-        };
-        
-        // Validate form
-        if (!validateContactForm(data)) {
-            showFormStatus('error', 'Please fill in all required fields correctly.');
-            return;
-        }
-        
-        // Show loading state
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.innerHTML;
-        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitButton.disabled = true;
-        showFormStatus('loading', 'Sending your message...');
-        
-        try {
-            // Make API call to Vercel serverless function
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            
-            if (response.ok && result.success) {
-                showFormStatus('success', 'Thank you for your message! We will get back to you shortly.');
-                contactForm.reset();
-                clearAllFieldErrors();
-                
-                // Auto-hide success message after 5 seconds
-                setTimeout(() => {
-                    if (formStatus) {
-                        formStatus.style.display = 'none';
-                    }
-                }, 5000);
-            } else {
-                // Handle error response from API
-                const errorMessage = result.error || 'Failed to send message. Please try again.';
-                showFormStatus('error', errorMessage);
-            }
-        } catch (error) {
-            console.error('Form submission error:', error);
-            showFormStatus('error', 'Sorry, there was an error sending your message. Please try again later or contact us directly at anaidoo.skms@gmail.com or +27 65 895 4832.');
-        } finally {
-            submitButton.innerHTML = originalButtonText;
-            submitButton.disabled = false;
-        }
-    });
-
-    // Real-time validation
-    const inputs = contactForm.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            validateField(this);
-        });
-        
-        input.addEventListener('input', function() {
-            clearFieldError(this);
-        });
-    });
-}
-
-// Validate contact form
-function validateContactForm(data) {
-    if (!data.name || data.name.trim().length < 2) return false;
-    if (!data.email || !isValidEmail(data.email)) return false;
-    if (!data.message || data.message.trim().length < 10) return false;
-    return true;
-}
-
-// Validate individual field
-function validateField(field) {
-    const value = field.value.trim();
-    let isValid = true;
-    let errorMessage = '';
-
-    // Check if required field is empty
-    if (field.hasAttribute('required') && !value) {
-        isValid = false;
-        errorMessage = 'This field is required.';
+      if (empty) empty.hidden = shown !== 0;
     }
 
-    // Email validation
-    if (field.type === 'email' && value) {
-        if (!isValidEmail(value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid email address.';
-        }
-    }
-
-    // Phone validation (optional field)
-    if (field.type === 'tel' && value) {
-        if (!isValidPhone(value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid phone number.';
-        }
-    }
-
-    // Message length validation
-    if (field.tagName === 'TEXTAREA' && value && value.length < 10) {
-        isValid = false;
-        errorMessage = 'Message must be at least 10 characters long.';
-    }
-
-    if (!isValid) {
-        showFieldError(field, errorMessage);
-    } else {
-        clearFieldError(field);
-    }
-
-    return isValid;
-}
-
-// Email validation
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Phone validation
-function isValidPhone(phone) {
-    const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
-    return phoneRegex.test(phone);
-}
-
-// Show field error
-function showFieldError(field, message) {
-    clearFieldError(field);
-    
-    field.style.borderColor = '#EF4444';
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'field-error';
-    errorDiv.style.color = '#EF4444';
-    errorDiv.style.fontSize = '0.875rem';
-    errorDiv.style.marginTop = '8px';
-    errorDiv.style.display = 'flex';
-    errorDiv.style.alignItems = 'center';
-    errorDiv.style.gap = '5px';
-    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-    
-    field.parentElement.appendChild(errorDiv);
-}
-
-// Clear field error
-function clearFieldError(field) {
-    field.style.borderColor = '';
-    
-    const existingError = field.parentElement.querySelector('.field-error');
-    if (existingError) {
-        existingError.remove();
-    }
-}
-
-// Clear all field errors
-function clearAllFieldErrors() {
-    const allErrors = document.querySelectorAll('.field-error');
-    allErrors.forEach(error => error.remove());
-    
-    const allInputs = document.querySelectorAll('.form-input, .form-textarea');
-    allInputs.forEach(input => {
-        input.style.borderColor = '';
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        category = btn.dataset.category;
+        apply();
+      });
     });
-}
 
-// Show form status message
-function showFormStatus(type, message) {
-    const formStatus = document.getElementById('form-status');
-    if (!formStatus) return;
-    
-    formStatus.textContent = message;
-    formStatus.className = `form-status ${type}`;
-    formStatus.style.display = 'block';
-    
-    // Scroll to message
-    formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-    // Escape key closes mobile menu
-    if (e.key === 'Escape') {
-        closeMobileMenu();
+    if (search) {
+      var timer;
+      search.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(apply, 120);
+      });
     }
-});
+  }
 
-// Add loading animation to page
-window.addEventListener('load', function() {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.3s ease';
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
+  /* ---------------- Contact form ---------------- */
+  function initContactForm() {
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    var status = document.getElementById('form-status');
+    var button = form.querySelector('button[type="submit"]');
 
-// Console message
-console.log('%cSKMS Accounting & Taxation', 'color: #1E40AF; font-size: 24px; font-weight: bold;');
-console.log('%cWebsite designed by Alba Designs', 'color: #6B7280; font-size: 14px;');
+    function show(kind, message) {
+      if (!status) return;
+      status.className = 'form-status is-visible ' + kind;
+      status.textContent = message;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        message: form.message.value.trim()
+      };
+
+      if (!data.name || !data.email || !data.message) {
+        show('error', 'Please complete your name, email address and message.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        show('error', 'That email address does not look right. Please check it.');
+        return;
+      }
+
+      var original = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending';
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Request failed');
+        return res.json().catch(function () { return {}; });
+      }).then(function () {
+        form.reset();
+        show('success', 'Thank you. Your message has been sent and we will respond within one business day.');
+      }).catch(function () {
+        show('error', 'That did not send. Please email anaidoo.skms@gmail.com or call +27 65 895 4832.');
+      }).finally(function () {
+        button.disabled = false;
+        button.innerHTML = original;
+      });
+    });
+  }
+
+  function init() {
+    initNav();
+    initHeader();
+    initReveal();
+    initBlogFilter();
+    initContactForm();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

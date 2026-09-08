@@ -1,12 +1,12 @@
 {
   "name": "skms-serverless",
   "version": "1.0.0",
-  "description": "SKMS Accounting & Taxation site with contact form using Vercel serverless functions",
+  "description": "SKMS Accounting & Taxation website with Vercel serverless contact form",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "vercel dev",
-    "start": "node script.js"
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "nodemailer": "^6.9.8"
