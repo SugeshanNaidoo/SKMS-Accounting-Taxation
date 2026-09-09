@@ -123,7 +123,7 @@ header.is-scrolled { box-shadow: 0 4px 30px rgba(30, 64, 175, .13); }
 
 .logo-container { display: flex; align-items: center; flex-shrink: 0; }
 .logo-image {
-    height: 45px;
+    height: 70px;
     width: auto;
     transition: transform .35s var(--ease-out);
 }
@@ -941,8 +941,8 @@ nav ul a.active::after { width: 42%; }
    ========================================================================== */
 footer {
     padding: 70px 0 0;
-    color: rgba(255, 255, 255, .75);
-    background: var(--text-dark);
+    color: var(--white);
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #0F172A 100%);
 }
 .footer-content {
     display: grid;
@@ -950,7 +950,7 @@ footer {
     gap: 45px;
     padding-bottom: 45px;
 }
-.footer-logo-image { height: 45px; width: auto; margin-bottom: 20px; }
+.footer-logo-image { height: 70px; width: auto; margin-bottom: 20px; }
 .footer-content > div > p { line-height: 1.7; font-size: .97rem; }
 
 .footer-content h4 {
@@ -1184,4 +1184,13 @@ footer {
     header, footer, .mobile-menu, .cta-band, .map-container, .scroll-cue { display: none; }
     .hero, .page-header { margin-top: 0; background: none; color: #000; }
     body { color: #000; }
+}
+
+/* ---------- Logo scales down on small screens so it clears the bar ---------- */
+@media (max-width: 860px) {
+    .logo-image { height: 54px; }
+    .footer-logo-image { height: 60px; }
+}
+@media (max-width: 480px) {
+    .logo-image { height: 46px; }
 }

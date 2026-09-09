@@ -813,3 +813,12 @@ footer a:hover {
     .cta-actions { flex-direction: column; }
     .cta-actions .btn { width: 100%; }
 }
+
+/* ---------- Logo scales down on small screens so it clears the bar ---------- */
+@media (max-width: 860px) {
+    .logo-image { height: 54px; }
+    .footer-logo-image { height: 60px; }
+}
+@media (max-width: 480px) {
+    .logo-image { height: 46px; }
+}
