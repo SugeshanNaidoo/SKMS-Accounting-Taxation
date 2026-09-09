@@ -1,10 +1,81 @@
 import nodemailer from 'nodemailer';
 
+/* ---------------------------------------------------------------------------
+   Spam protection
+   --------------------------------------------------------------------------- */
+
+// Only accept submissions posted from our own site.
+const ALLOWED_ORIGINS = [
+    'https://skms.cc',
+    'https://www.skms.cc',
+    'http://localhost:3000',
+];
+
+// Per-IP submission log. NOTE: serverless instances are recycled and requests
+// may be spread across several of them, so treat this as a speed bump that
+// stops naive floods, not a hard guarantee. For strict limits, back this with
+// Upstash Redis or Vercel KV.
+const submissions = new Map();
+
+const WINDOW_SHORT = 10 * 60 * 1000;   // 10 minutes
+const MAX_SHORT = 3;
+const WINDOW_LONG = 60 * 60 * 1000;    // 1 hour
+const MAX_LONG = 8;
+const MIN_FILL_SECONDS = 3;            // humans do not complete the form faster
+const MAX_FORM_AGE_MS = 6 * 60 * 60 * 1000;
+
+function clientIp(req) {
+    const fwd = req.headers['x-forwarded-for'];
+    if (typeof fwd === 'string' && fwd.length) return fwd.split(',')[0].trim();
+    return req.headers['x-real-ip'] || req.socket?.remoteAddress || 'unknown';
+}
+
+function rateLimit(ip) {
+    const now = Date.now();
+
+    // Drop expired entries so the map cannot grow without bound.
+    for (const [key, times] of submissions) {
+        const kept = times.filter(t => now - t < WINDOW_LONG);
+        if (kept.length) submissions.set(key, kept);
+        else submissions.delete(key);
+    }
+
+    const times = submissions.get(ip) || [];
+    const recent = times.filter(t => now - t < WINDOW_SHORT);
+
+    if (recent.length >= MAX_SHORT) {
+        return { ok: false, retryAfter: Math.ceil((WINDOW_SHORT - (now - recent[0])) / 1000) };
+    }
+    if (times.length >= MAX_LONG) {
+        return { ok: false, retryAfter: Math.ceil((WINDOW_LONG - (now - times[0])) / 1000) };
+    }
+
+    times.push(now);
+    submissions.set(ip, times);
+    return { ok: true };
+}
+
+// Cheap content heuristics for the spam that gets past the honeypot.
+function looksLikeSpam(name, message) {
+    const body = `${name} ${message}`;
+    const links = (message.match(/https?:\/\/|www\.|\[url|\]\(http/gi) || []).length;
+    if (links >= 3) return true;
+    if (/\b(bitcoin|crypto|casino|viagra|cialis|payday loan|seo services|backlinks|forex signals)\b/i.test(body)) return true;
+    if (/[\u0400-\u04FF]{12,}/.test(body)) return true;   // long Cyrillic runs
+    if (/(.)\1{15,}/.test(message)) return true;           // one character repeated
+    return false;
+}
+
+
 export default async function handler(req, res) {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    // CORS: restricted to our own origins so the endpoint cannot be driven
+    // from a third-party page.
+    const origin = req.headers.origin;
+    if (origin && ALLOWED_ORIGINS.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     // Handle preflight request
@@ -21,7 +92,51 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { name, email, phone, message } = req.body;
+        const { name, email, phone, message, website, company, renderedAt } = req.body || {};
+
+        // Honeypot: both fields are hidden from real users, so anything in them
+        // came from a bot filling every input it found. Respond with success so
+        // the bot has no signal that it was caught.
+        if ((website && String(website).trim()) || (company && String(company).trim())) {
+            console.warn('Honeypot triggered', { ip: clientIp(req) });
+            return res.status(200).json({
+                success: true,
+                message: 'Your message has been sent successfully. We will get back to you soon!'
+            });
+        }
+
+        // Timing check: forms completed almost instantly are automated.
+        const started = Number(renderedAt);
+        if (Number.isFinite(started) && started > 0) {
+            const elapsed = Date.now() - started;
+            if (elapsed < MIN_FILL_SECONDS * 1000 || elapsed > MAX_FORM_AGE_MS) {
+                console.warn('Timing check failed', { elapsed, ip: clientIp(req) });
+                return res.status(200).json({
+                    success: true,
+                    message: 'Your message has been sent successfully. We will get back to you soon!'
+                });
+            }
+        }
+
+        // Rate limit per IP.
+        const ip = clientIp(req);
+        const limit = rateLimit(ip);
+        if (!limit.ok) {
+            res.setHeader('Retry-After', String(limit.retryAfter));
+            return res.status(429).json({
+                success: false,
+                error: 'You have sent several messages already. Please try again shortly, or call us on +27 65 895 4832.'
+            });
+        }
+
+        // Length ceilings, so a huge payload cannot be used to tie up the mailer.
+        if (String(name).length > 100 || String(email).length > 254 ||
+            String(message).length > 5000) {
+            return res.status(400).json({
+                success: false,
+                error: 'One of the fields is longer than we can accept. Please shorten it and try again.'
+            });
+        }
 
         // Validate required fields
         if (!name || !email || !message) {
@@ -65,6 +180,15 @@ export default async function handler(req, res) {
                     error: 'Please enter a valid phone number.'
                 });
             }
+        }
+
+        // Content heuristics for spam that clears the honeypot.
+        if (looksLikeSpam(name, message)) {
+            console.warn('Spam heuristics matched', { ip: clientIp(req) });
+            return res.status(200).json({
+                success: true,
+                message: 'Your message has been sent successfully. We will get back to you soon!'
+            });
         }
 
         // Sanitize inputs to prevent XSS

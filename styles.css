@@ -1329,3 +1329,15 @@ body.nav-open { overflow: hidden; }
     nav ul { transition: none !important; }
     nav ul li:not(.nav-drawer-head) { opacity: 1 !important; transform: none !important; }
 }
+
+/* ---------- Honeypot ----------
+   Positioned off-screen rather than display:none, because many bots skip
+   fields that are explicitly hidden but will happily fill these. */
+.hp-field {
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

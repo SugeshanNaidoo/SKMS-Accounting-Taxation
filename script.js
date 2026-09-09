@@ -305,6 +305,11 @@
     var status = document.getElementById('form-status');
     var button = form.querySelector('button[type="submit"]');
 
+    // Stamp when the form became available, so the server can reject
+    // submissions completed impossibly fast.
+    var stamp = document.getElementById('renderedAt');
+    if (stamp) stamp.value = String(Date.now());
+
     function show(kind, message) {
       if (!status) return;
       status.className = 'form-status is-visible ' + kind;
@@ -314,11 +319,20 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
+      // form.elements.namedItem avoids the form.name / HTMLFormElement.name clash
+      function field(n) {
+        var el = form.elements.namedItem(n);
+        return el && typeof el.value === 'string' ? el.value : '';
+      }
+
       var data = {
-        name: form.name.value.trim(),
-        email: form.email.value.trim(),
-        phone: form.phone.value.trim(),
-        message: form.message.value.trim()
+        name: field('name').trim(),
+        email: field('email').trim(),
+        phone: field('phone').trim(),
+        message: field('message').trim(),
+        website: field('website'),
+        company: field('company'),
+        renderedAt: field('renderedAt')
       };
 
       if (!data.name || !data.email || !data.message) {
@@ -339,13 +353,23 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       }).then(function (res) {
-        if (!res.ok) throw new Error('Request failed');
-        return res.json().catch(function () { return {}; });
+        return res.json().catch(function () { return {}; }).then(function (payload) {
+          if (res.status === 429) {
+            var err = new Error('rate limited');
+            err.friendly = payload.error ||
+              'You have sent several messages already. Please try again shortly.';
+            throw err;
+          }
+          if (!res.ok) throw new Error('Request failed');
+          return payload;
+        });
       }).then(function () {
         form.reset();
+        if (stamp) stamp.value = String(Date.now());
         show('success', 'Thank you. Your message has been sent and we will respond within one business day.');
-      }).catch(function () {
-        show('error', 'That did not send. Please email anaidoo.skms@gmail.com or call +27 65 895 4832.');
+      }).catch(function (err) {
+        show('error', (err && err.friendly) ||
+          'That did not send. Please email anaidoo.skms@gmail.com or call +27 65 895 4832.');
       }).finally(function () {
         button.disabled = false;
         button.innerHTML = original;
