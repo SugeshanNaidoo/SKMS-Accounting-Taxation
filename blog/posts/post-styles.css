@@ -854,3 +854,12 @@
         opacity: 1 !important; transform: none !important; transition: none !important;
     }
 }
+
+/* Author role line in the sidebar bio */
+.author-bio .author-role {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: .9rem;
+    margin-bottom: 8px;
+}
+.author-bio img, .author-section .author-avatar { object-position: top center; }

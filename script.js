@@ -10,29 +10,73 @@
     var nav = document.getElementById('primary-nav');
     if (!toggle || !nav) return;
 
+    var closeBtn = nav.querySelector('.nav-close');
+    var scrollY = 0;
+
+    function lock() {
+      scrollY = window.scrollY || window.pageYOffset;
+      document.body.style.top = -scrollY + 'px';
+      document.body.classList.add('nav-open');
+      // position:fixed is what actually stops iOS Safari scrolling behind the drawer
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    }
+
+    function unlock() {
+      document.body.classList.remove('nav-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
+    }
+
     function setOpen(open) {
+      if (open === nav.classList.contains('is-open')) return;
       nav.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      var icon = toggle.querySelector('i');
-      if (icon) icon.className = open ? 'fas fa-xmark' : 'fas fa-bars';
+
+      if (open) {
+        lock();
+        if (closeBtn) closeBtn.focus();
+      } else {
+        unlock();
+        toggle.focus();
+      }
     }
 
     toggle.addEventListener('click', function (e) {
       e.stopPropagation();
       setOpen(!nav.classList.contains('is-open'));
     });
-    document.addEventListener('click', function (e) {
-      if (!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-        setOpen(false); toggle.focus();
-      }
-    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () { setOpen(false); });
+    }
+
+    // Any nav link closes the drawer
     nav.addEventListener('click', function (e) {
       if (e.target.closest('a')) setOpen(false);
     });
+
+    document.addEventListener('keydown', function (e) {
+      if (!nav.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') { setOpen(false); return; }
+
+      // Keep tabbing inside the drawer while it covers the page
+      if (e.key === 'Tab') {
+        var items = nav.querySelectorAll('a[href], button:not([disabled])');
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+
     window.addEventListener('resize', function () {
       if (window.innerWidth > 860) setOpen(false);
     });
