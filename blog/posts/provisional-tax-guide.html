@@ -28,8 +28,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Provisional tax: who has to pay it, and how the estimate actually works","description":"A plain guide to provisional tax in South Africa \u2014 who qualifies, the IRP6 payment dates for a February year-end, how the basic amount works, and the penalties for underestimating.","image":"https://skms.cc/imgs/covers/provisional-tax-guide.svg","datePublished":"2026-08-18","dateModified":"2026-08-18","author":{"@type":"Organization","name":"SKMS Accounting & Taxation","url":"https://skms.cc"},"publisher":{"@type":"Organization","name":"SKMS Accounting & Taxation","logo":{"@type":"ImageObject","url":"https://skms.cc/imgs/skms.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://skms.cc/blog/posts/provisional-tax-guide"},"articleSection":"Tax","inLanguage":"en-ZA"}</script>
+<link rel="stylesheet" href="/blog/blog-styles.css">
 <link rel="stylesheet" href="/blog/posts/post-styles.css">
 </head>
 <body><header>
@@ -50,27 +50,55 @@
     </button>
   </div>
 </header>
-<article class="post">
-  <header class="post-header">
-    <div class="container container-narrow">
+<div class="reading-progress" id="readingProgress"></div>
+
+<article class="blog-post">
+  <div class="post-header">
+    <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
-        <a href="/blog">Blog</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/blog">Blog</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
         <span>Tax</span>
       </nav>
-      <h1>Provisional tax: who has to pay it, and how the estimate actually works</h1>
+
       <div class="post-meta">
-        <span class="badge-inline tax">Tax</span>
-        <span><i class="fas fa-calendar" aria-hidden="true"></i><time datetime="2026-08-18">18 August 2026</time></span>
-        <span><i class="fas fa-clock" aria-hidden="true"></i>8 min read</span>
+        <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+        <span class="date"><i class="fas fa-calendar" aria-hidden="true"></i> <time datetime="2026-08-18">18 August 2026</time></span>
+        <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 8 min read</span>
+      </div>
+
+      <h1>Provisional tax: who has to pay it, and how the estimate actually works</h1>
+
+      <div class="author-section">
+        <picture>
+          <source srcset="/imgs/ashen.webp" type="image/webp">
+          <img src="/imgs/ashen.png" alt="Ashendran Naidoo" class="author-avatar" width="400" height="500">
+        </picture>
+        <div class="author-details">
+          <strong>Ashendran Naidoo</strong>
+          <span>Director &amp; Head Accountant</span>
+        </div>
+        <div class="share-buttons">
+          <button class="share-btn" data-share="facebook" title="Share on Facebook" aria-label="Share on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="twitter" title="Share on X" aria-label="Share on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="whatsapp" title="Share on WhatsApp" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="copy" title="Copy link" aria-label="Copy link"><i class="fas fa-link" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <div class="container container-narrow">
-    <img class="post-cover" src="/imgs/covers/provisional-tax-guide.svg" alt="" width="800" height="500" fetchpriority="high">
-    <div class="post-body">
-      <p class="lead">Provisional tax is not a separate tax. It is a way of paying income tax in instalments during the year, instead of one large amount after assessment.</p>
+  <div class="post-featured-image">
+    <img src="/imgs/covers/provisional-tax-guide.svg" alt="" width="800" height="500" fetchpriority="high">
+  </div>
+
+  <div class="container">
+    <div class="post-content-wrapper">
+      <div class="post-content">
+        <p class="lead">Provisional tax is not a separate tax. It is a way of paying income tax in instalments during the year, instead of one large amount after assessment.</p>
 
 <p>It catches people out for two reasons. The first payment falls due before the year has ended, so you are paying tax on income you have not finished earning. And the penalty regime punishes a bad estimate, not just a late payment.</p>
 
@@ -90,15 +118,13 @@
 
 <h2>The dates for a February year-end</h2>
 
-<div class="keyfacts">
-  <h3>Provisional tax, 2027 year of assessment</h3>
-  <dl>
-    <div><dt>First payment (IRP6)</dt><dd>31 August 2026</dd></div>
-    <div><dt>Second payment (IRP6)</dt><dd>Last business day of February 2027</dd></div>
-    <div><dt>Optional third top-up</dt><dd>30 September 2027</dd></div>
-  </dl>
-  <p class="keyfacts-note">Companies with a year-end other than February follow the same pattern relative to their own financial year: six months in, then year-end, then six months after.</p>
-</div>
+<h4><i class="fas fa-table-list"></i> Provisional tax, 2027 year of assessment</h4>
+<table class="tax-table"><thead><tr><th>Item</th><th>Amount / date</th></tr></thead><tbody>
+<tr><td>First payment (IRP6)</td><td>31 August 2026</td></tr>
+<tr><td>Second payment (IRP6)</td><td>Last business day of February 2027</td></tr>
+<tr><td>Optional third top-up</td><td>30 September 2027</td></tr>
+</tbody></table>
+<div class="info-box"><i class="fas fa-info-circle"></i><div><p>Companies with a year-end other than February follow the same pattern relative to their own financial year: six months in, then year-end, then six months after.</p></div></div>
 
 <h2>How the first payment is calculated</h2>
 
@@ -140,55 +166,103 @@
 <p>File anyway. Late filing and late payment are penalised separately, and a payment arrangement is far easier to negotiate on a return that has been submitted. SARS will generally engage on an instalment arrangement where the liability is properly declared.</p>
 
 <p>If your first payment is due and you are not sure the estimate holds up, talk to us before 31 August rather than after.</p>
-    </div>
 
-    <aside class="post-disclaimer">
-      <p><strong>General information, not advice.</strong> This article sets out the position as we
-      understand it at the date of publication. Tax legislation changes and individual circumstances
-      differ — please take advice on your own situation before acting.</p>
-    </aside>
+        <div class="warning-box">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <div>
+            <p><strong>General information, not advice.</strong> This article sets out the position
+            as we understand it at the date of publication. Tax legislation changes and individual
+            circumstances differ — please take advice on your own situation before acting.</p>
+          </div>
+        </div>
 
-    <aside class="post-author">
-      <picture>
-        <source srcset="/imgs/skms2.webp" type="image/webp">
-        <img src="/imgs/skms2.png" alt="" width="670" height="372" loading="lazy">
-      </picture>
-      <div>
-        <strong>SKMS Accounting &amp; Taxation</strong>
-        <p>Accountants and tax practitioners in Essenwood, Durban, working with businesses
-           and individuals across KwaZulu-Natal since 2018.</p>
-        <a href="/contact" class="blog-read-more">Speak to us <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="cta-box">
+          <h3>Need this applied to your business?</h3>
+          <p>We can look at your position and tell you what it means in your circumstances.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
       </div>
-    </aside>
+
+      <aside class="post-sidebar">
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-user-circle" aria-hidden="true"></i> About the author</h3>
+          <div class="author-bio">
+            <picture>
+              <source srcset="/imgs/ashen.webp" type="image/webp">
+              <img src="/imgs/ashen.png" alt="Ashendran Naidoo" width="400" height="500" loading="lazy">
+            </picture>
+            <h4>Ashendran Naidoo</h4>
+            <p>Director &amp; Head Accountant at SKMS, working with South African businesses on
+               tax planning and compliance since 2018.</p>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-newspaper" aria-hidden="true"></i> Related articles</h3>
+          <div class="related-posts">
+            <a href="/blog/posts/tax-planning-2026-27">
+  <img src="/imgs/covers/tax-planning-2026-27.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>Tax planning for the 2026/27 year, while you can still change the outcome</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 24 June 2026</span>
   </div>
+</a>
+<a href="/blog/posts/tax-deductions-freelancers">
+  <img src="/imgs/covers/tax-deductions-freelancers.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>What freelancers in South Africa can actually deduct</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 3 June 2026</span>
+  </div>
+</a>
+          </div>
+        </div>
 
-  <section class="post-related">
-    <div class="container container-narrow">
-      <h2>Related reading</h2>
-      <div class="related-grid">
-        <a class="related-card" href="/blog/posts/tax-planning-2026-27">
-  <span class="badge-inline tax">Tax</span>
-  <strong>Tax planning for the 2026/27 year, while you can still change the outcome</strong>
-  <span class="related-meta">24 June 2026 &middot; 8 min read</span>
-</a>
-<a class="related-card" href="/blog/posts/tax-deductions-freelancers">
-  <span class="badge-inline tax">Tax</span>
-  <strong>What freelancers in South Africa can actually deduct</strong>
-  <span class="related-meta">3 June 2026 &middot; 6 min read</span>
-</a>
-      </div>
-      <a href="/blog" class="btn btn-secondary">All articles</a>
+        <div class="sidebar-widget cta-widget">
+          <h3><i class="fas fa-comments" aria-hidden="true"></i> Speak to us</h3>
+          <p>A first consultation is free, and usually answers the question faster than reading.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
+      </aside>
     </div>
-  </section>
+  </div>
 </article>
 
-<section class="cta-band">
+<section class="related-section">
   <div class="container">
-    <h2>Need this applied to your business?</h2>
-    <p>We can look at your position and tell you what it means in your circumstances.</p>
-    <div class="cta-actions">
-      <a href="/contact" class="btn btn-primary"><i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation</a>
-      
+    <h2><i class="fas fa-newspaper" aria-hidden="true"></i> Continue reading</h2>
+    <div class="related-grid">
+      <article class="blog-card reveal" style="--d:0ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/tax-planning-2026-27.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 8 min read</span>
+    </div>
+    <h3><a href="/blog/posts/tax-planning-2026-27">Tax planning for the 2026/27 year, while you can still change the outcome</a></h3>
+    <p>The 2026/27 tax year runs to 28 February 2027. Almost everything that reduces the bill has to be done before then, not while the return is being prepared.</p>
+    <a href="/blog/posts/tax-planning-2026-27" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
+<article class="blog-card reveal" style="--d:130ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/tax-deductions-freelancers.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 6 min read</span>
+    </div>
+    <h3><a href="/blog/posts/tax-deductions-freelancers">What freelancers in South Africa can actually deduct</a></h3>
+    <p>Freelancers routinely overpay tax by not claiming, and occasionally get into trouble by claiming things they cannot support. Here is the line between the two.</p>
+    <a href="/blog/posts/tax-deductions-freelancers" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
     </div>
   </div>
 </section>

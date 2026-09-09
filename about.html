@@ -49,18 +49,19 @@
 <section class="page-header">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a><i class="fas fa-chevron-right" aria-hidden="true"></i><span>About</span>
+      <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+      <i class="fas fa-chevron-right" aria-hidden="true"></i><span>About</span>
     </nav>
-    <h1>About SKMS</h1>
-    <p>A Durban accounting practice built on doing the unglamorous parts properly.</p>
+    <h1 class="hero-anim d1">About SKMS</h1>
+    <p class="hero-anim d2">A Durban accounting practice built on doing the unglamorous parts properly.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="split">
-      <div class="prose">
-        <h2 class="section-title">Our story</h2>
+    <div class="grid-2">
+      <div class="about-text reveal-left">
+        <h2>Our story</h2>
         <p class="lead">SKMS opened in 2018 as a small accounting practice in Essenwood. It has
            grown into a full-service firm, and the reason clients give for staying has not changed:
            the work is done when it is supposed to be done, and someone picks up the phone.</p>
@@ -73,10 +74,10 @@
            actually make a decision on. We would rather be judged on that than on anything
            we could put in a brochure.</p>
       </div>
-      <div>
+      <div class="about-image reveal-right">
         <picture>
           <source srcset="/imgs/story.webp" type="image/webp">
-          <img src="/imgs/story.jpg" alt="The SKMS practice" class="section-image" width="1100" height="1650" loading="lazy" decoding="async">
+          <img src="/imgs/story.jpg" alt="The SKMS practice" width="1100" height="1650" loading="lazy" decoding="async">
         </picture>
       </div>
     </div>
@@ -85,13 +86,13 @@
 
 <section class="section section-light">
   <div class="container">
-    <div class="pair">
-      <div class="mission-card">
+    <div class="grid-2">
+      <div class="mission-card reveal-left">
         <h2><i class="fas fa-bullseye" aria-hidden="true"></i>Our mission</h2>
         <p>To give clients financial information they can rely on and advice they can act on,
            delivered on time and explained in plain terms.</p>
       </div>
-      <div class="mission-card">
+      <div class="mission-card reveal-right">
         <h2><i class="fas fa-eye" aria-hidden="true"></i>Our vision</h2>
         <p>To be the practice KwaZulu-Natal business owners recommend to each other, because
            of how we work rather than how we market.</p>
@@ -102,46 +103,35 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">What we hold ourselves to</h2>
-    </div>
-    <div class="values">
-      <div class="value-item">
-        <i class="fas fa-scale-balanced" aria-hidden="true"></i>
-        <div><strong>Integrity</strong>
-        <p>We tell clients what the position is, including when it is not what they hoped.
-           A tax position we cannot defend is not one we will sign.</p></div>
-      </div>
-      <div class="value-item">
-        <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-        <div><strong>Accuracy</strong>
-        <p>Reconciled, supported and checked. Numbers that cannot be traced back to a source
-           document are not finished numbers.</p></div>
-      </div>
-      <div class="value-item">
-        <i class="fas fa-clock" aria-hidden="true"></i>
-        <div><strong>Timeliness</strong>
-        <p>Deadlines are tracked on a calendar, not in someone's memory. Most penalties our
-           clients avoid are ones they never knew were coming.</p></div>
-      </div>
-      <div class="value-item">
-        <i class="fas fa-users" aria-hidden="true"></i>
-        <div><strong>Plain language</strong>
-        <p>Advice you cannot understand is advice you cannot use. We explain the reasoning,
-           not just the conclusion.</p></div>
-      </div>
+    <h2 class="section-title reveal-fade">What we hold ourselves to</h2>
+    <p class="section-subtitle reveal-fade" style="--d:120ms">The standards our clients actually notice.</p>
+    <div class="grid-2">
+      <div><div class="value-item reveal-left" style="--d:0ms">
+  <i class="fas fa-scale-balanced" aria-hidden="true"></i>
+  <div><strong>Integrity</strong><p>We tell clients what the position is, including when it is not what they hoped. A tax position we cannot defend is not one we will sign.</p></div>
+</div>
+<div class="value-item reveal-left" style="--d:110ms">
+  <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+  <div><strong>Accuracy</strong><p>Reconciled, supported and checked. Numbers that cannot be traced back to a source document are not finished numbers.</p></div>
+</div></div>
+      <div><div class="value-item reveal-right" style="--d:0ms">
+  <i class="fas fa-clock" aria-hidden="true"></i>
+  <div><strong>Timeliness</strong><p>Deadlines are tracked on a calendar, not in someone's memory. Most penalties our clients avoid are ones they never knew were coming.</p></div>
+</div>
+<div class="value-item reveal-right" style="--d:110ms">
+  <i class="fas fa-users" aria-hidden="true"></i>
+  <div><strong>Plain language</strong><p>Advice you cannot understand is advice you cannot use. We explain the reasoning, not just the conclusion.</p></div>
+</div></div>
     </div>
   </div>
 </section>
 
 <section class="section section-light">
   <div class="container">
-    <div class="section-head is-centered">
-      <h2 class="section-title">The team</h2>
-      <p class="section-lede">Small enough that you will know who is doing your work.</p>
-    </div>
-    <div class="team-grid">
-      <div class="team-card">
+    <h2 class="section-title reveal-fade">The team</h2>
+    <p class="section-subtitle reveal-fade" style="--d:120ms">Small enough that you will know who is doing your work.</p>
+    <div class="grid-4">
+      <div class="team-card reveal" style="--d:0ms">
   <div class="team-photo">
     <picture>
       <source srcset="/imgs/ashen.webp" type="image/webp">
@@ -152,7 +142,7 @@
   <p class="role">Director &amp; Head Accountant</p>
   <p>Leads the practice and its business advisory work, with clients across trading, professional services and property.</p>
 </div>
-<div class="team-card">
+<div class="team-card reveal" style="--d:120ms">
   <div class="team-photo">
     <picture>
       <source srcset="/imgs/theo.webp" type="image/webp">
@@ -163,7 +153,7 @@
   <p class="role">Tax Specialist</p>
   <p>Handles tax planning, dispute resolution and SARS verifications for individuals and companies.</p>
 </div>
-<div class="team-card">
+<div class="team-card reveal" style="--d:240ms">
   <div class="team-photo">
     <picture>
       <source srcset="/imgs/ki-andra.webp" type="image/webp">
@@ -174,7 +164,7 @@
   <p class="role">AFS Compiler</p>
   <p>Compiles annual financial statements and manages the reporting and compliance cycle.</p>
 </div>
-<div class="team-card">
+<div class="team-card reveal" style="--d:360ms">
   <div class="team-photo">
     <picture>
       <source srcset="/imgs/adam.webp" type="image/webp">

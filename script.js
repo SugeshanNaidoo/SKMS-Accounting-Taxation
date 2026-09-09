@@ -22,34 +22,29 @@
       e.stopPropagation();
       setOpen(!nav.classList.contains('is-open'));
     });
-
     document.addEventListener('click', function (e) {
       if (!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
     });
-
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-        setOpen(false);
-        toggle.focus();
+        setOpen(false); toggle.focus();
       }
     });
-
     nav.addEventListener('click', function (e) {
       if (e.target.closest('a')) setOpen(false);
     });
-
     window.addEventListener('resize', function () {
       if (window.innerWidth > 860) setOpen(false);
     });
   }
 
-  /* ---------------- Header shadow on scroll ---------------- */
+  /* ---------------- Header state on scroll ---------------- */
   function initHeader() {
     var header = document.querySelector('header');
     if (!header) return;
     var ticking = false;
     function update() {
-      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      header.classList.toggle('is-scrolled', window.scrollY > 10);
       ticking = false;
     }
     window.addEventListener('scroll', function () {
@@ -58,14 +53,18 @@
     update();
   }
 
-  /* ---------------- One entrance animation ---------------- */
+  /* ---------------- Scroll reveals ---------------- */
+  var REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade, .reveal-blur, .section-title';
+
   function initReveal() {
-    var items = document.querySelectorAll('.reveal');
+    var items = document.querySelectorAll(REVEAL);
     if (!items.length) return;
+
     if (reduced || !('IntersectionObserver' in window)) {
       items.forEach(function (el) { el.classList.add('is-in'); });
       return;
     }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -73,8 +72,133 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
     items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------------- Counting stat numbers ---------------- */
+  function countUp(el) {
+    var target = el.dataset.count || el.textContent;
+    var match = String(target).match(/^([^\d]*)([\d.,]+)(.*)$/);
+    if (!match) return;
+
+    var prefix = match[1];
+    var suffix = match[3];
+    var raw = match[2].replace(/,/g, '');
+    var value = parseFloat(raw);
+    var decimals = (raw.split('.')[1] || '').length;
+    if (isNaN(value)) return;
+
+    var duration = 1600;
+    var start = null;
+
+    function frame(now) {
+      if (start === null) start = now;
+      var progress = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + (value * eased).toFixed(decimals) + suffix;
+      if (progress < 1) window.requestAnimationFrame(frame);
+      else el.textContent = prefix + match[2] + suffix;
+    }
+    window.requestAnimationFrame(frame);
+  }
+
+  function initCounters() {
+    var nums = document.querySelectorAll('.stat-number[data-count]');
+    if (!nums.length) return;
+    if (reduced || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          countUp(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    nums.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------------- Reading progress (article pages) ---------------- */
+  function initReadingProgress() {
+    var bar = document.getElementById('readingProgress');
+    var article = document.querySelector('.post-content');
+    if (!bar || !article) return;
+
+    var ticking = false;
+    function update() {
+      var rect = article.getBoundingClientRect();
+      var total = rect.height - window.innerHeight;
+      var scrolled = -rect.top;
+      var pct = total > 0 ? Math.min(Math.max(scrolled / total, 0), 1) : 0;
+      bar.style.width = (pct * 100) + '%';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ---------------- Share buttons ---------------- */
+  function initShare() {
+    var buttons = document.querySelectorAll('.share-btn[data-share]');
+    if (!buttons.length) return;
+
+    var url = window.location.href;
+    var title = document.title;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var kind = btn.dataset.share;
+        var target = '';
+
+        if (kind === 'facebook') {
+          target = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+        } else if (kind === 'twitter') {
+          target = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) +
+                   '&text=' + encodeURIComponent(title);
+        } else if (kind === 'linkedin') {
+          target = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+        } else if (kind === 'whatsapp') {
+          target = 'https://wa.me/?text=' + encodeURIComponent(title + ' ' + url);
+        }
+
+        if (target) {
+          window.open(target, '_blank', 'noopener,width=640,height=560');
+          return;
+        }
+
+        // Copy link
+        var done = function () {
+          var icon = btn.querySelector('i');
+          var prev = icon.className;
+          icon.className = 'fas fa-check';
+          btn.classList.add('is-copied');
+          setTimeout(function () {
+            icon.className = prev;
+            btn.classList.remove('is-copied');
+          }, 1800);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(url).then(done).catch(function () {});
+        } else {
+          var tmp = document.createElement('textarea');
+          tmp.value = url;
+          tmp.setAttribute('readonly', '');
+          tmp.style.position = 'absolute';
+          tmp.style.left = '-9999px';
+          document.body.appendChild(tmp);
+          tmp.select();
+          try { document.execCommand('copy'); done(); } catch (err) {}
+          document.body.removeChild(tmp);
+        }
+      });
+    });
   }
 
   /* ---------------- Blog filtering and search ---------------- */
@@ -85,6 +209,7 @@
     var buttons = document.querySelectorAll('.category-btn');
     var search = document.getElementById('searchInput');
     var empty = document.getElementById('noResults');
+    var featured = document.querySelector('.featured-post');
     var cards = grid.querySelectorAll('[data-category]');
     var category = 'all';
 
@@ -93,12 +218,20 @@
       var shown = 0;
 
       cards.forEach(function (card) {
-        var matchesCat = category === 'all' || card.dataset.category === category;
-        var matchesTerm = !term || (card.dataset.search || '').indexOf(term) !== -1;
-        var visible = matchesCat && matchesTerm;
+        var okCat = category === 'all' || card.dataset.category === category;
+        var okTerm = !term || (card.dataset.search || '').indexOf(term) !== -1;
+        var visible = okCat && okTerm;
         card.classList.toggle('is-filtered', !visible);
         if (visible) shown++;
       });
+
+      if (featured) {
+        var fCat = category === 'all' || featured.dataset.category === category;
+        var fTerm = !term || (featured.dataset.search || '').indexOf(term) !== -1;
+        var fVisible = fCat && fTerm;
+        featured.classList.toggle('is-filtered', !fVisible);
+        if (fVisible) shown++;
+      }
 
       if (empty) empty.hidden = shown !== 0;
     }
@@ -180,6 +313,9 @@
     initNav();
     initHeader();
     initReveal();
+    initCounters();
+    initReadingProgress();
+    initShare();
     initBlogFilter();
     initContactForm();
   }

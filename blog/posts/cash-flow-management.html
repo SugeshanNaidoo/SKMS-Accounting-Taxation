@@ -28,8 +28,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The 13-week cash flow forecast, and why it changes how you run the month","description":"A rolling 13-week cash flow forecast gives a small business enough warning to act. Here is how to build one, what to put in it, and the mistakes that make forecasts useless.","image":"https://skms.cc/imgs/covers/cash-flow-management.svg","datePublished":"2026-09-02","dateModified":"2026-09-02","author":{"@type":"Organization","name":"SKMS Accounting & Taxation","url":"https://skms.cc"},"publisher":{"@type":"Organization","name":"SKMS Accounting & Taxation","logo":{"@type":"ImageObject","url":"https://skms.cc/imgs/skms.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://skms.cc/blog/posts/cash-flow-management"},"articleSection":"Business finance","inLanguage":"en-ZA"}</script>
+<link rel="stylesheet" href="/blog/blog-styles.css">
 <link rel="stylesheet" href="/blog/posts/post-styles.css">
 </head>
 <body><header>
@@ -50,27 +50,55 @@
     </button>
   </div>
 </header>
-<article class="post">
-  <header class="post-header">
-    <div class="container container-narrow">
+<div class="reading-progress" id="readingProgress"></div>
+
+<article class="blog-post">
+  <div class="post-header">
+    <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
-        <a href="/blog">Blog</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/blog">Blog</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
         <span>Business finance</span>
       </nav>
-      <h1>The 13-week cash flow forecast, and why it changes how you run the month</h1>
+
       <div class="post-meta">
-        <span class="badge-inline business">Business finance</span>
-        <span><i class="fas fa-calendar" aria-hidden="true"></i><time datetime="2026-09-02">2 September 2026</time></span>
-        <span><i class="fas fa-clock" aria-hidden="true"></i>7 min read</span>
+        <span class="category business"><i class="fas fa-tag" aria-hidden="true"></i> Business finance</span>
+        <span class="date"><i class="fas fa-calendar" aria-hidden="true"></i> <time datetime="2026-09-02">2 September 2026</time></span>
+        <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 7 min read</span>
+      </div>
+
+      <h1>The 13-week cash flow forecast, and why it changes how you run the month</h1>
+
+      <div class="author-section">
+        <picture>
+          <source srcset="/imgs/ashen.webp" type="image/webp">
+          <img src="/imgs/ashen.png" alt="Ashendran Naidoo" class="author-avatar" width="400" height="500">
+        </picture>
+        <div class="author-details">
+          <strong>Ashendran Naidoo</strong>
+          <span>Director &amp; Head Accountant</span>
+        </div>
+        <div class="share-buttons">
+          <button class="share-btn" data-share="facebook" title="Share on Facebook" aria-label="Share on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="twitter" title="Share on X" aria-label="Share on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="whatsapp" title="Share on WhatsApp" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="copy" title="Copy link" aria-label="Copy link"><i class="fas fa-link" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <div class="container container-narrow">
-    <img class="post-cover" src="/imgs/covers/cash-flow-management.svg" alt="" width="800" height="500" fetchpriority="high">
-    <div class="post-body">
-      <p class="lead">Most businesses that close their doors were profitable on paper somewhere in the final year. They ran out of cash before they ran out of customers, and usually with very little warning.</p>
+  <div class="post-featured-image">
+    <img src="/imgs/covers/cash-flow-management.svg" alt="" width="800" height="500" fetchpriority="high">
+  </div>
+
+  <div class="container">
+    <div class="post-content-wrapper">
+      <div class="post-content">
+        <p class="lead">Most businesses that close their doors were profitable on paper somewhere in the final year. They ran out of cash before they ran out of customers, and usually with very little warning.</p>
 
 <p>A profit and loss statement tells you what you earned. It does not tell you whether you can cover salaries on the 25th. The gap between those two questions is where a rolling cash flow forecast earns its keep.</p>
 
@@ -133,55 +161,103 @@
 <p>A spreadsheet is enough. Most owners can build a first version in an afternoon from twelve months of bank statements and a debtors age analysis. What matters more than the tool is the weekly habit of rolling it forward.</p>
 
 <p>If cash flow is the thing keeping you up, we can build the first forecast with you and set up the weekly rhythm around it.</p>
-    </div>
 
-    <aside class="post-disclaimer">
-      <p><strong>General information, not advice.</strong> This article sets out the position as we
-      understand it at the date of publication. Tax legislation changes and individual circumstances
-      differ — please take advice on your own situation before acting.</p>
-    </aside>
+        <div class="warning-box">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <div>
+            <p><strong>General information, not advice.</strong> This article sets out the position
+            as we understand it at the date of publication. Tax legislation changes and individual
+            circumstances differ — please take advice on your own situation before acting.</p>
+          </div>
+        </div>
 
-    <aside class="post-author">
-      <picture>
-        <source srcset="/imgs/skms2.webp" type="image/webp">
-        <img src="/imgs/skms2.png" alt="" width="670" height="372" loading="lazy">
-      </picture>
-      <div>
-        <strong>SKMS Accounting &amp; Taxation</strong>
-        <p>Accountants and tax practitioners in Essenwood, Durban, working with businesses
-           and individuals across KwaZulu-Natal since 2018.</p>
-        <a href="/contact" class="blog-read-more">Speak to us <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="cta-box">
+          <h3>Need this applied to your business?</h3>
+          <p>We can look at your position and tell you what it means in your circumstances.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
       </div>
-    </aside>
+
+      <aside class="post-sidebar">
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-user-circle" aria-hidden="true"></i> About the author</h3>
+          <div class="author-bio">
+            <picture>
+              <source srcset="/imgs/ashen.webp" type="image/webp">
+              <img src="/imgs/ashen.png" alt="Ashendran Naidoo" width="400" height="500" loading="lazy">
+            </picture>
+            <h4>Ashendran Naidoo</h4>
+            <p>Director &amp; Head Accountant at SKMS, working with South African businesses on
+               tax planning and compliance since 2018.</p>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-newspaper" aria-hidden="true"></i> Related articles</h3>
+          <div class="related-posts">
+            <a href="/blog/posts/financial-planning-startups">
+  <img src="/imgs/covers/financial-planning-startups.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>Year one for a new South African business: the compliance runway</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 29 July 2026</span>
   </div>
+</a>
+<a href="/blog/posts/provisional-tax-guide">
+  <img src="/imgs/covers/provisional-tax-guide.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>Provisional tax: who has to pay it, and how the estimate actually works</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 18 August 2026</span>
+  </div>
+</a>
+          </div>
+        </div>
 
-  <section class="post-related">
-    <div class="container container-narrow">
-      <h2>Related reading</h2>
-      <div class="related-grid">
-        <a class="related-card" href="/blog/posts/financial-planning-startups">
-  <span class="badge-inline business">Business finance</span>
-  <strong>Year one for a new South African business: the compliance runway</strong>
-  <span class="related-meta">29 July 2026 &middot; 9 min read</span>
-</a>
-<a class="related-card" href="/blog/posts/provisional-tax-guide">
-  <span class="badge-inline tax">Tax</span>
-  <strong>Provisional tax: who has to pay it, and how the estimate actually works</strong>
-  <span class="related-meta">18 August 2026 &middot; 8 min read</span>
-</a>
-      </div>
-      <a href="/blog" class="btn btn-secondary">All articles</a>
+        <div class="sidebar-widget cta-widget">
+          <h3><i class="fas fa-comments" aria-hidden="true"></i> Speak to us</h3>
+          <p>A first consultation is free, and usually answers the question faster than reading.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
+      </aside>
     </div>
-  </section>
+  </div>
 </article>
 
-<section class="cta-band">
+<section class="related-section">
   <div class="container">
-    <h2>Need this applied to your business?</h2>
-    <p>We can look at your position and tell you what it means in your circumstances.</p>
-    <div class="cta-actions">
-      <a href="/contact" class="btn btn-primary"><i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation</a>
-      
+    <h2><i class="fas fa-newspaper" aria-hidden="true"></i> Continue reading</h2>
+    <div class="related-grid">
+      <article class="blog-card reveal" style="--d:0ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/financial-planning-startups.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category business"><i class="fas fa-tag" aria-hidden="true"></i> Business finance</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 9 min read</span>
+    </div>
+    <h3><a href="/blog/posts/financial-planning-startups">Year one for a new South African business: the compliance runway</a></h3>
+    <p>Registering the company is the easy part. Here is what actually falls due in the first twelve months, and the decisions that are cheap now and expensive later.</p>
+    <a href="/blog/posts/financial-planning-startups" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
+<article class="blog-card reveal" style="--d:130ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/provisional-tax-guide.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 8 min read</span>
+    </div>
+    <h3><a href="/blog/posts/provisional-tax-guide">Provisional tax: who has to pay it, and how the estimate actually works</a></h3>
+    <p>Provisional tax catches people out because it is a payment on income you have not finished earning. Here is how the estimate works and how the penalties are calculated.</p>
+    <a href="/blog/posts/provisional-tax-guide" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
     </div>
   </div>
 </section>

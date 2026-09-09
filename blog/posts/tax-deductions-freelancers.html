@@ -28,8 +28,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What freelancers in South Africa can actually deduct","description":"The deductions available to South African freelancers and sole proprietors \u2014 home office, travel, equipment, retirement and medical credits \u2014 and the record-keeping SARS expects behind each one.","image":"https://skms.cc/imgs/covers/tax-deductions-freelancers.svg","datePublished":"2026-06-03","dateModified":"2026-06-03","author":{"@type":"Organization","name":"SKMS Accounting & Taxation","url":"https://skms.cc"},"publisher":{"@type":"Organization","name":"SKMS Accounting & Taxation","logo":{"@type":"ImageObject","url":"https://skms.cc/imgs/skms.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://skms.cc/blog/posts/tax-deductions-freelancers"},"articleSection":"Tax","inLanguage":"en-ZA"}</script>
+<link rel="stylesheet" href="/blog/blog-styles.css">
 <link rel="stylesheet" href="/blog/posts/post-styles.css">
 </head>
 <body><header>
@@ -50,27 +50,55 @@
     </button>
   </div>
 </header>
-<article class="post">
-  <header class="post-header">
-    <div class="container container-narrow">
+<div class="reading-progress" id="readingProgress"></div>
+
+<article class="blog-post">
+  <div class="post-header">
+    <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
-        <a href="/blog">Blog</a><i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <a href="/blog">Blog</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
         <span>Tax</span>
       </nav>
-      <h1>What freelancers in South Africa can actually deduct</h1>
+
       <div class="post-meta">
-        <span class="badge-inline tax">Tax</span>
-        <span><i class="fas fa-calendar" aria-hidden="true"></i><time datetime="2026-06-03">3 June 2026</time></span>
-        <span><i class="fas fa-clock" aria-hidden="true"></i>6 min read</span>
+        <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+        <span class="date"><i class="fas fa-calendar" aria-hidden="true"></i> <time datetime="2026-06-03">3 June 2026</time></span>
+        <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 6 min read</span>
+      </div>
+
+      <h1>What freelancers in South Africa can actually deduct</h1>
+
+      <div class="author-section">
+        <picture>
+          <source srcset="/imgs/ashen.webp" type="image/webp">
+          <img src="/imgs/ashen.png" alt="Ashendran Naidoo" class="author-avatar" width="400" height="500">
+        </picture>
+        <div class="author-details">
+          <strong>Ashendran Naidoo</strong>
+          <span>Director &amp; Head Accountant</span>
+        </div>
+        <div class="share-buttons">
+          <button class="share-btn" data-share="facebook" title="Share on Facebook" aria-label="Share on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="twitter" title="Share on X" aria-label="Share on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="whatsapp" title="Share on WhatsApp" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+          <button class="share-btn" data-share="copy" title="Copy link" aria-label="Copy link"><i class="fas fa-link" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <div class="container container-narrow">
-    <img class="post-cover" src="/imgs/covers/tax-deductions-freelancers.svg" alt="" width="800" height="500" fetchpriority="high">
-    <div class="post-body">
-      <p class="lead">If you work for yourself, your deductible expenses are the ones actually incurred in producing your income, and not of a capital or private nature. Everything below follows from that test.</p>
+  <div class="post-featured-image">
+    <img src="/imgs/covers/tax-deductions-freelancers.svg" alt="" width="800" height="500" fetchpriority="high">
+  </div>
+
+  <div class="container">
+    <div class="post-content-wrapper">
+      <div class="post-content">
+        <p class="lead">If you work for yourself, your deductible expenses are the ones actually incurred in producing your income, and not of a capital or private nature. Everything below follows from that test.</p>
 
 <p>Two failure modes are common. Freelancers who claim nothing beyond obvious costs and overpay, and freelancers who claim generously and cannot support any of it when SARS asks. The difference is usually record-keeping rather than knowledge.</p>
 
@@ -141,55 +169,103 @@
 <p>Remember too that freelance income makes you a provisional taxpayer. Two IRP6 returns a year, with the first due 31 August for a February year-end.</p>
 
 <p>If you are unsure whether a specific cost qualifies, ask before you claim it rather than after.</p>
-    </div>
 
-    <aside class="post-disclaimer">
-      <p><strong>General information, not advice.</strong> This article sets out the position as we
-      understand it at the date of publication. Tax legislation changes and individual circumstances
-      differ — please take advice on your own situation before acting.</p>
-    </aside>
+        <div class="warning-box">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <div>
+            <p><strong>General information, not advice.</strong> This article sets out the position
+            as we understand it at the date of publication. Tax legislation changes and individual
+            circumstances differ — please take advice on your own situation before acting.</p>
+          </div>
+        </div>
 
-    <aside class="post-author">
-      <picture>
-        <source srcset="/imgs/skms2.webp" type="image/webp">
-        <img src="/imgs/skms2.png" alt="" width="670" height="372" loading="lazy">
-      </picture>
-      <div>
-        <strong>SKMS Accounting &amp; Taxation</strong>
-        <p>Accountants and tax practitioners in Essenwood, Durban, working with businesses
-           and individuals across KwaZulu-Natal since 2018.</p>
-        <a href="/contact" class="blog-read-more">Speak to us <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="cta-box">
+          <h3>Need this applied to your business?</h3>
+          <p>We can look at your position and tell you what it means in your circumstances.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
       </div>
-    </aside>
+
+      <aside class="post-sidebar">
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-user-circle" aria-hidden="true"></i> About the author</h3>
+          <div class="author-bio">
+            <picture>
+              <source srcset="/imgs/ashen.webp" type="image/webp">
+              <img src="/imgs/ashen.png" alt="Ashendran Naidoo" width="400" height="500" loading="lazy">
+            </picture>
+            <h4>Ashendran Naidoo</h4>
+            <p>Director &amp; Head Accountant at SKMS, working with South African businesses on
+               tax planning and compliance since 2018.</p>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3><i class="fas fa-newspaper" aria-hidden="true"></i> Related articles</h3>
+          <div class="related-posts">
+            <a href="/blog/posts/provisional-tax-guide">
+  <img src="/imgs/covers/provisional-tax-guide.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>Provisional tax: who has to pay it, and how the estimate actually works</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 18 August 2026</span>
   </div>
+</a>
+<a href="/blog/posts/tax-planning-2026-27">
+  <img src="/imgs/covers/tax-planning-2026-27.svg" alt="" width="300" height="188" loading="lazy">
+  <div>
+    <h4>Tax planning for the 2026/27 year, while you can still change the outcome</h4>
+    <span><i class="fas fa-calendar" aria-hidden="true"></i> 24 June 2026</span>
+  </div>
+</a>
+          </div>
+        </div>
 
-  <section class="post-related">
-    <div class="container container-narrow">
-      <h2>Related reading</h2>
-      <div class="related-grid">
-        <a class="related-card" href="/blog/posts/provisional-tax-guide">
-  <span class="badge-inline tax">Tax</span>
-  <strong>Provisional tax: who has to pay it, and how the estimate actually works</strong>
-  <span class="related-meta">18 August 2026 &middot; 8 min read</span>
-</a>
-<a class="related-card" href="/blog/posts/tax-planning-2026-27">
-  <span class="badge-inline tax">Tax</span>
-  <strong>Tax planning for the 2026/27 year, while you can still change the outcome</strong>
-  <span class="related-meta">24 June 2026 &middot; 8 min read</span>
-</a>
-      </div>
-      <a href="/blog" class="btn btn-secondary">All articles</a>
+        <div class="sidebar-widget cta-widget">
+          <h3><i class="fas fa-comments" aria-hidden="true"></i> Speak to us</h3>
+          <p>A first consultation is free, and usually answers the question faster than reading.</p>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation
+          </a>
+        </div>
+      </aside>
     </div>
-  </section>
+  </div>
 </article>
 
-<section class="cta-band">
+<section class="related-section">
   <div class="container">
-    <h2>Need this applied to your business?</h2>
-    <p>We can look at your position and tell you what it means in your circumstances.</p>
-    <div class="cta-actions">
-      <a href="/contact" class="btn btn-primary"><i class="fas fa-calendar-check" aria-hidden="true"></i> Book a consultation</a>
-      
+    <h2><i class="fas fa-newspaper" aria-hidden="true"></i> Continue reading</h2>
+    <div class="related-grid">
+      <article class="blog-card reveal" style="--d:0ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/provisional-tax-guide.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 8 min read</span>
+    </div>
+    <h3><a href="/blog/posts/provisional-tax-guide">Provisional tax: who has to pay it, and how the estimate actually works</a></h3>
+    <p>Provisional tax catches people out because it is a payment on income you have not finished earning. Here is how the estimate works and how the penalties are calculated.</p>
+    <a href="/blog/posts/provisional-tax-guide" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
+<article class="blog-card reveal" style="--d:130ms">
+  <div class="blog-image">
+    <img src="/imgs/covers/tax-planning-2026-27.svg" alt="" width="800" height="500" loading="lazy">
+  </div>
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="category tax"><i class="fas fa-tag" aria-hidden="true"></i> Tax</span>
+      <span class="read-time"><i class="fas fa-clock" aria-hidden="true"></i> 8 min read</span>
+    </div>
+    <h3><a href="/blog/posts/tax-planning-2026-27">Tax planning for the 2026/27 year, while you can still change the outcome</a></h3>
+    <p>The 2026/27 tax year runs to 28 February 2027. Almost everything that reduces the bill has to be done before then, not while the return is being prepared.</p>
+    <a href="/blog/posts/tax-planning-2026-27" class="read-more">Read more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</article>
     </div>
   </div>
 </section>
