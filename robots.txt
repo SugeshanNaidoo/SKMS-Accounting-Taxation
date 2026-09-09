@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://skms.cc/sitemap.xml
+Sitemap: https://www.skms.cc/sitemap.xml
